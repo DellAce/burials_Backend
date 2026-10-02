@@ -1,4 +1,4 @@
-name: Mirror to GitLab
+name: Mirror main to GitLab
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Push branches and tags to GitLab
+      - name: Push main to GitLab
         env:
           GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
           GITLAB_URL: https://gitlab.dellace.xyz/tppo/backend.git
@@ -24,5 +24,5 @@ jobs:
           auth=$(printf 'oauth2:%s' "$GITLAB_TOKEN" | base64 -w0)
           echo "::add-mask::$auth"
 
-          push --force "$GITLAB_URL" 'refs/remotes/origin/main:refs/heads/main'
-            git -c http.extraheader="AUTHORIZATION: basic $auth" \
+          git -c http.extraheader="AUTHORIZATION: basic $auth" \
+            push --force "$GITLAB_URL" 'refs/remotes/origin/main:refs/heads/main'
